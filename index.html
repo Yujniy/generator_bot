@@ -17,18 +17,17 @@
 </div>
 
 <script>
-    const telegram = window.Telegram.WebApp;
-    telegram.ready();
+const telegram = window.Telegram.WebApp;
 
-    function setUserGreeting() {
-        const userGreetingElement = document.getElementById('userGreeting');
-        const userName = telegram.initDataUnsafe?.user?.first_name || 'там';
-        userGreetingElement.innerText = `Привет, ${userName}! Добро пожаловать в генератор паролей.`;
-    }
-    
-    setUserGreeting(); // Установить приветствие пользователя при инициализации
-    
-    // Функция generatePassword() остается неизменной
+telegram.ready().then(() => {
+  const user = telegram.initDataUnsafe.user;
+  if (user && user.first_name) {
+    const userGreetingElement = document.getElementById('userGreeting');
+    userGreetingElement.innerText = `Привет, ${user.first_name}! Добро пожаловать в генератор паролей.`;
+  } else {
+    console.error('The user data is not available.');
+  }
+});
 </script>
 
 </body>
