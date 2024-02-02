@@ -17,15 +17,19 @@
 </div>
 
 <script>
-const telegram = window.Telegram.WebApp;
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.Telegram && window.Telegram.WebApp) {
+    const telegram = window.Telegram.WebApp;
 
-telegram.ready().then(() => {
-  const user = telegram.initDataUnsafe.user;
-  if (user && user.first_name) {
-    const userGreetingElement = document.getElementById('userGreeting');
-    userGreetingElement.innerText = `Привет, ${user.first_name}! Добро пожаловать в генератор паролей.`;
+    telegram.ready().then(() => {
+      const user = telegram.initDataUnsafe.user;
+      if (user && user.first_name) {
+        const userGreetingElement = document.getElementById('userGreeting');
+        userGreetingElement.innerText = `Привет, ${user.first_name}! Добро пожаловать в генератор паролей.`;
+      }
+    });
   } else {
-    console.error('The user data is not available.');
+    console.error('Telegram Web App API is not available.');
   }
 });
 </script>
