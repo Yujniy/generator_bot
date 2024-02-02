@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> <!-- Подключаем Telegram Web App API -->
+    <style>
+        body { text-align: center; margin-top: 50px; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Welcome, <span id="username">Loading...</span>!</h1>
+
+    <script>
+        // Код JavaScript вставлен непосредственно в HTML документ
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, загрузилась ли Web App API библиотека
+            if (window.Telegram) {
+                const WebApp = window.Telegram.WebApp;
+                WebApp.ready(); // Сообщаем приложению, что наше веб-приложение загружено и готово
+
+                // Получение имени пользователя и установка его в HTML элемент с id 'username'
+                const userNameElement = document.getElementById('username');
+                userNameElement.textContent = WebApp.initDataUnsafe?.user?.first_name ?? 'Guest User';
+            }
+        });
+    </script>
+</body>
+</html>
