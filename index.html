@@ -2,249 +2,222 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генератор случайных чисел</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-        rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        function generateRandomNumber() {
-            var min = parseInt(document.getElementById("minNumber").value);
-            var max = parseInt(document.getElementById("maxNumber").value);
-            var resultsCount = parseInt(document.getElementById("resultsCount").value) || 1;
-            var resultElement = document.getElementById("result");
-            var nanWarning = document.getElementById("nanWarning");
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Генератор случайных чисел</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet">
+   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <script>
+      // Function to update the background color based on the current theme
+      function updateTheme() {
+         var telegramTheme = window.getComputedStyle(document.documentElement).getPropertyValue('--current-theme');
+         if (telegramTheme === 'dark') {
+            document.body.style.backgroundColor = '#000'; // Dark theme background color
+         } else {
+            document.body.style.backgroundColor = '#fff'; // Light theme background color
+         }
+      }
 
-            if (isNaN(min) || isNaN(max) || isNaN(resultsCount)) {
-                nanWarning.style.display = "block";
-                nanWarning.classList.add('animate__animated', 'animate__fadeInDown');
-                setTimeout(function () {
-                    nanWarning.classList.remove('animate__fadeInDown');
-                    nanWarning.classList.add('animate__fadeOutUp');
-                    setTimeout(function () {
-                        nanWarning.style.display = "none";
-                        nanWarning.classList.remove('animate__animated', 'animate__fadeOutUp');
-                    }, 1000); // Notification will disappear after 1 second
-                }, 2000); // Notification will show for 2 seconds
-                return;
-            }
+      // Event listener for the checkbox
+      document.getElementById('multipleResults').addEventListener('change', function () {
+         var resultsCountContainer = document.getElementById('resultsCountContainer');
+         var resultsCountInput = document.getElementById('resultsCount');
+         if (this.checked) {
+            resultsCountContainer.style.display = "block";
+         } else {
+            resultsCountContainer.style.display = "none";
+            resultsCountInput.value = 1; // Reset the value to 1
+         }
+      });
 
-            var results = [];
-            if (max - min + 1 < resultsCount) {
-                alert('Недостаточно уникальных чисел в заданном диапазоне для генерации запрошенного количества случайных чисел.');
-                return;
-            }
+      // Function to enable or disable the generate button based on input values
+      function updateMaxValue() {
+         var minInput = document.getElementById('min');
+         var maxInput = document.getElementById('max');
+         var generateButton = document.getElementById('generateButton');
 
-            var results = new Set();
-            while (results.size < resultsCount) {
-                var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-                results.add(randomNumber);
-            }
+         if (minInput.value !== '' && maxInput.value !== '') {
+            generateButton.disabled = false;
+         } else {
+            generateButton.disabled = true;
+         }
+      }
 
-            // Определяем правильный текст в зависимости от количества чисел
-            var resultText = resultsCount === 1 ? "Ваше случайное число: " : "Ваши случайные числа: ";
-            resultElement.innerText = resultText + Array.from(results).join(", ");
-            // Добавляем эффект конфетти после генерации чисел
-            fireConfetti();
-        }
+      // Function to generate random numbers
+      function generateRandomNumber() {
+         var min = parseInt(document.getElementById('min').value);
+         var max = parseInt(document.getElementById('max').value);
+         var resultsCount = parseInt(document.getElementById('resultsCount').value) || 1;
+         var resultElement = document.getElementById('result');
+         var results = [];
 
-        function fireConfetti() {
-            // Выстреливаем конфетти из правого края
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { x: 1, y: 0.8 }
-            });
+         for (var i = 0; i < resultsCount; i++) {
+            var result = Math.floor(Math.random() * (max - min + 1)) + min;
+            results.push(result);
+         }
 
-            // Выстреливаем конфетти из левого края
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { x: 0, y: 0.8 }
-            });
-        }
+         resultElement.textContent = results.join(", ");
+      }
 
-        function isNumberKey(evt) {
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            var numberWarning = document.getElementById("numberWarning");
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                numberWarning.style.display = "block";
-                numberWarning.classList.add('animate__animated', 'animate__fadeInDown');
-                setTimeout(function () {
-                    numberWarning.classList.remove('animate__fadeInDown');
-                    numberWarning.classList.add('animate__fadeOutUp');
-                    setTimeout(function () {
-                        numberWarning.style.display = "none";
-                        numberWarning.classList.remove('animate__animated', 'animate__fadeOutUp');
-                    }, 1000); // Уведомление исчезнет через 1 секунду
-                }, 2000); // Уведомление исчезнет через 2 секунды
-                return false;
-            }
-            numberWarning.style.display = "none";
-            return true;
-        }
+      // Attach event listeners to inputs
+      document.getElementById('min').addEventListener('input', updateMaxValue);
+      document.getElementById('max').addEventListener('input', updateMaxValue);
+      document.getElementById('generateButton').addEventListener('click', function (event) {
+         if (this.disabled) {
+            alert("Не введено число");
+            event.preventDefault(); // Prevent default action
+         }
+      });
 
-        window.addEventListener('DOMContentLoaded', (event) => {
-
-            document.getElementById("minNumber").addEventListener('input', isNumberKey);
-            document.getElementById("maxNumber").addEventListener('input', isNumberKey);
-        });
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var multipleResultsCheckbox = document.getElementById('multipleResults');
-            var resultsCountContainer = document.getElementById('resultsCountContainer');
-
-            multipleResultsCheckbox.addEventListener('change', function (event) {
-                var resultsCountContainer = document.getElementById('resultsCountContainer');
-                if (event.target.checked) {
-                    resultsCountContainer.style.display = "block";
-                    resultsCountContainer.classList.add('animate__animated', 'animate__fadeIn');
-                } else {
-                    resultsCountContainer.style.display = "none";
-                    document.getElementById('resultsCount').value = 1; // Reset the value to 1
-                    // Optionally, remove the animation classes if you want to reset the state
-                    resultsCountContainer.classList.remove('animate__animated', 'animate__fadeIn');
-                }
-            });
-
-            var resultsCountContainer = document.getElementById('resultsCountContainer');
-            var multipleResultsContainer = document.getElementById('multipleResultsContainer');
-            multipleResultsContainer.parentNode.insertBefore(resultsCountContainer, multipleResultsContainer);
-        });
-    </script>
+      // Update the theme initially and then periodically
+      updateTheme();
+      setInterval(updateTheme, 1000);
+   </script>
 </head>
-
 <style>
-  body {
-  font-family: "Nunito", sans-serif;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  /* изменено с center на flex-start */
-  height: 100vh;
-  margin: 0;
-}
+   body {
+      font-family: 'Nunito', sans-serif;
+   }
 
-input,
-button {
-  margin: 10px;
-}
+   .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      /* Если вы хотите, чтобы элементы были расположены вертикально */
+   }
 
-input {
-  width: 120px;
-  height: 40px;
-  margin: 10px;
-  border-radius: 10px;
-  border: green 2px solid;
-  text-align: center;
-  font-size: 15px;
-  outline: none;
-}
+   .bordered {
+      padding: 10px;
+   }
 
+   .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+   }
 
-body {
-  background-color: white;
-  color: black;
-}
-#numberWarning {
-  position: fixed;
-  display: none;
-  background-color: red;
-  color: white;
-  /* Текст уведомления белого цвета */
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1000;
-  /* Убедитесь, что уведомление находится поверх других элементов */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+   .form-group label {
+      margin-bottom: 5px;
+   }
 
-button {
-  width: 160px;
-  /* or any other value that suits your design */
-  height: 60px;
-  /* or any other value that suits your design */
-  background-color: green;
-  border: none;
-  color: white;
-  border-radius: 15px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
+   .generate-button {
+      width: 100%;
+      /* Ширина кнопки теперь равна ширине родительского элемента */
+      height: 60px;
+      background-color: green;
+      border: none;
+      color: white;
+      border-radius: 15px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+   }
 
-#nanWarning {
-  position: fixed;
-  background-color: red;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: none;
-}
+   input {
+      width: 120px;
+      height: 40px;
+      margin: 10px;
+      border-radius: 10px;
+      border: green 2px solid;
+      text-align: center;
+      font-size: 15px;
+      outline: none;
+   }
 
-#multipleResults {
-  transform: scale(0.8);
-  vertical-align: middle;
-}
+   #multipleResults {
+      transform: scale(0.8);
+      vertical-align: middle;
+   }
 
-#multipleResultsLabel {
-  display: inline-block;
-  vertical-align: middle;
-}
+   #multipleResultsLabel {
+      display: inline-block;
+      vertical-align: middle;
+   }
 
-#multipleResultsContainer {
-  display: flex;
-  align-items: center;
-}
+   #multipleResultsContainer {
+      display: flex;
+      align-items: center;
+   }
 
-.checkbox-more {
-  cursor: pointer;
-}
+   .checkbox-more {
+      cursor: pointer;
+   }
 
-#multipleResultsLabel {
-  margin-right: -45px;
-  /* Adjust the value as needed */
-}
+   #multipleResultsLabel {
+      margin-right: -45px;
+      /* Adjust the value as needed */
+   }
 
-#multipleResults {
-  transform: scale(0.7);
-  /* Adjust the scale value as needed */
-}
+   #multipleResults {
+      transform: scale(0.7);
+      /* Adjust the scale value as needed */
+   }
+
+   .generate-button {
+      transition: background-color 0.4s ease;
+      /* Добавляем плавный переход для свойства background-color */
+      /* ... остальные стили кнопки ... */
+   }
+
+   .generate-button:disabled {
+      background-color: grey;
+      cursor: not-allowed;
+      opacity: 0.6;
+   }
+
+   #result {
+      text-align: center;
+      /* Центрируем текст горизонтально */
+      margin-top: 10px;
+      /* Добавляем отступ сверху для разделения от кнопки */
+   }
 </style>
 
 <body>
-    <div class="header-container">
-        <h1>Генератор случайных чисел</h1>
-    </div>
-    <label for="minNumber">Минимальное число:</label>
-    <input type="number" id="minNumber" min="0" onkeypress="return isNumberKey(event)">
-    <label for="maxNumber">Максимальное число:</label>
-    <input type="number" id="maxNumber" min="0" onkeypress="return isNumberKey(event)">
-    <p id="numberWarning">Вводите числа!</p>
-    <p id="nanWarning" style="display: none;">Вставьте числа!</p>
-    <div id="resultsCountContainer" style="display: none;">
-        <label for="resultsCount" style="display: block;">Количество результатов:</label>
-        <input type="number" id="resultsCount" min="1">
-    </div>
-    <div id="multipleResultsContainer">
-        <label id="multipleResultsLabel" for="multipleResults">Несколько результатов:</label>
-        <input type="checkbox" id="multipleResults" class="checkbox-more">
-    </div>
-    <button onclick="generateRandomNumber()">Сгенерировать</button>
-    <p id="result"></p>
-    </div>
+   <div class="content">
+      <h1 class="header-text">Генератор случайных чисел</h1>
+      <div class="bordered">
+         <div class="form-group">
+            <label for="min" class="first-label">Минимальное значение:</label>
+            <input type="number" id="min" min="0" oninput="updateMaxValue()">
+         </div>
+         <div class="form-group">
+            <label for="max">Максимальное значение:</label>
+            <input type="number" id="max" min="0" oninput="updateMaxValue()">
+         </div>
+         <div id="resultsCountContainer" style="display: none; text-align: center;">
+            <label for="resultsCount">Ваше новое название:</label>
+            <input type="number" id="resultsCount" min="1"
+               style="margin-left: auto; margin-right: auto; display: block;">
+         </div>
+         <div id="multipleResultsContainer">
+            <label id="multipleResultsLabel" for="multipleResults">Несколько результатов:</label>
+            <input type="checkbox" id="multipleResults" class="checkbox-more">
+         </div>
+         <button id="generateButton" onclick="generateRandomNumber()" class="generate-button"
+            disabled>Сгенерировать</button>
+         <p id="result"></p>
+      </div>
+   </div>
+
+   <script>
+      document.getElementById('multipleResults').addEventListener('change', function () {
+         var resultsCountContainer = document.getElementById('resultsCountContainer');
+         var resultsCountInput = document.getElementById('resultsCount');
+         if (this.checked) {
+            resultsCountContainer.style.display = "block";
+         } else {
+            resultsCountContainer.style.display = "none";
+            resultsCountInput.value = 1; // Сбрасываем значение на 1
+         }
+      });
+   </script>
 </body>
 
 </html>
