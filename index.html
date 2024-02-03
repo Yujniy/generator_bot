@@ -14,36 +14,7 @@
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
    <script>
 
-      // Добавить обработчик события для изменения темы
-      window.Telegram.WebApp.onEvent('themeChanged', updateTheme);
-
-      // Функция для обновления темы фона страницы
-      function updateTheme() {
-         var bodyStyles = document.body.style;
-         if (window.Telegram.WebApp.themeParams?.bg_color === '#000000') {
-            // Цвет фона задан в Telegram как черный
-            bodyStyles.backgroundColor = 'black';
-            bodyStyles.color = 'white'; // Изменить цвет текста на белый для лучшей читаемости
-         } else {
-            // Возвращает обычную тему
-            bodyStyles.backgroundColor = '';
-            bodyStyles.color = ''; // Возвращает цвет текста обратно к стандартному
-         }
-      }
-
-      // Вызов функции при первой загрузке приложения
-      updateTheme();
-
-      // Прикрепить обработчики событий к полям ввода
-      document.getElementById('min').addEventListener('input', updateMaxValue);
-      document.getElementById('max').addEventListener('input', updateMaxValue);
-      document.getElementById('generateButton').addEventListener('click', function (event) {
-         if (this.disabled) {
-            alert("Не введено число");
-            event.preventDefault(); // Предотвратить стандартное действие
-         }
-      });
-
+      // Обработчик события для чекбокса
       document.getElementById('multipleResults').addEventListener('change', function () {
          var resultsCountContainer = document.getElementById('resultsCountContainer');
          var resultsCountInput = document.getElementById('resultsCount');
@@ -105,11 +76,22 @@
          });
       }
 
+      // Прикрепить обработчики событий к полям ввода
+      document.getElementById('min').addEventListener('input', updateMaxValue);
+      document.getElementById('max').addEventListener('input', updateMaxValue);
+      document.getElementById('generateButton').addEventListener('click', function (event) {
+         if (this.disabled) {
+            alert("Не введено число");
+            event.preventDefault(); // Предотвратить стандартное действие
+         }
+      });
    </script>
 </head>
 <style>
    body {
       font-family: 'Nunito', sans-serif;
+      background: var(--tg-theme-bg-color);
+      color: var(--tg-theme-text-color);
    }
 
    .content {
