@@ -117,9 +117,9 @@
       margin-bottom: 5px;
    }
 
-   /* Existing styles for .generate-button */
    .generate-button {
       width: 100%;
+      /* Ширина кнопки теперь равна ширине родительского элемента */
       height: 60px;
       background-color: green;
       border: none;
@@ -129,13 +129,6 @@
       font-weight: bold;
       cursor: pointer;
       margin-top: 10px;
-   }
-
-   /* New styles for .generate-button in dark mode */
-   @media (prefers-color-scheme: dark) {
-      .generate-button {
-         background-color: rgb(0, 170, 255);
-      }
    }
 
    input {
@@ -193,6 +186,12 @@
       /* Центрируем текст горизонтально */
       margin-top: 10px;
       /* Добавляем отступ сверху для разделения от кнопки */
+   }
+
+   /* Переопределение цвета кнопки в тёмной теме */
+   :root[tg-theme="dark"] .generate-button {
+      background-color: #007bff;
+      /* Голубой цвет */
    }
 </style>
 
