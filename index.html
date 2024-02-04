@@ -12,7 +12,8 @@
    <script src="https://telegram.org/js/telegram-web-app.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-   <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+   <link rel='stylesheet'
+      href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
    <script>
 
       // Обработчик события для чекбокса
@@ -189,14 +190,24 @@
       /* Центрируем текст горизонтально */
       margin-top: 10px;
       /* Добавляем отступ сверху для разделения от кнопки */
+      font-size: 30px;
    }
 
-.footer-icon {
-   margin-top: 20px; /* Отступ сверху для разделения от предыдущего контента */
-   text-align: center; /* Центрирование иконки */
-   font-size: 40px; /* Увеличенный размер шрифта для иконки */
-   color: var(--tg-theme-text-color); /* Цвет иконки будет меняться в зависимости от темы */
-}
+   .footer-icon {
+      margin-top: 20px;
+      /* Отступ сверху для разделения от предыдущего контента */
+      text-align: center;
+      /* Центрирование иконки */
+      font-size: 40px;
+      /* Увеличенный размер шрифта для иконки */
+      color: var(--tg-theme-text-color);
+      /* Цвет иконки будет меняться в зависимости от темы */
+   }
+
+   #multipleResults {
+      background-color: var(--tg-theme-bg-color);
+      color: var(--tg-theme-text-color);
+   }
 </style>
 
 <body>
