@@ -131,13 +131,6 @@
       margin-top: 10px;
    }
 
-   /* Добавленный код */
-   :root {
-      --input-bg-color: #333333; /* Темный фон для полей ввода */
-      --input-text-color: #ffffff; /* Цвет текста для полей ввода */
-   }
-
-   /* Измените селектор input для включения переменных цветовой схемы */
    input {
       width: 120px;
       height: 40px;
@@ -147,9 +140,7 @@
       text-align: center;
       font-size: 15px;
       outline: none;
-      background-color: var(--input-bg-color); /* Фон поля ввода */
-      color: var(--input-text-color); /* Цвет текста поля ввода */
-      caret-color: var(--input-text-color); /* Цвет курсора ввода */
+      background-color: var(--tg-theme-bg-color);
    }
 
    #multipleResults {
