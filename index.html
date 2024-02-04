@@ -131,6 +131,13 @@
       margin-top: 10px;
    }
 
+   /* Добавленный код */
+   :root {
+      --input-bg-color: #333333; /* Темный фон для полей ввода */
+      --input-text-color: #ffffff; /* Цвет текста для полей ввода */
+   }
+
+   /* Измените селектор input для включения переменных цветовой схемы */
    input {
       width: 120px;
       height: 40px;
@@ -140,6 +147,9 @@
       text-align: center;
       font-size: 15px;
       outline: none;
+      background-color: var(--input-bg-color); /* Фон поля ввода */
+      color: var(--input-text-color); /* Цвет текста поля ввода */
+      caret-color: var(--input-text-color); /* Цвет курсора ввода */
    }
 
    #multipleResults {
@@ -186,12 +196,6 @@
       /* Центрируем текст горизонтально */
       margin-top: 10px;
       /* Добавляем отступ сверху для разделения от кнопки */
-   }
-
-   /* Переопределение цвета кнопки в тёмной теме */
-   :root[tg-theme="dark"] .generate-button {
-      background-color: #007bff;
-      /* Голубой цвет */
    }
 </style>
 
